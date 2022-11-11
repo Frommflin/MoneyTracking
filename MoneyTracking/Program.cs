@@ -9,6 +9,7 @@ string input;
 
 do
 {
+    Console.WriteLine($"Your current balance is {account.Balance}");
     Methods.ShowMenu();
 
     Console.Write("Enter option: ");
