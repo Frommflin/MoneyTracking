@@ -3,9 +3,9 @@ using MoneyTracking;
 
 Console.WriteLine("Welcome to your MoneyTracker!");
 
-
-
+BankAccount account = new BankAccount(); // account will be used for all transactions
 string input;
+
 do
 {
     Methods.ShowMenu();
