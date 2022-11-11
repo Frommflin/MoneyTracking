@@ -17,7 +17,7 @@ do
     input.Trim();
     if (input == "1")
     {
-        Methods.ShowTransactions();
+        Methods.ShowTransactions(transactions);
     }
     else if (input == "2")
     {

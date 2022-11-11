@@ -20,12 +20,19 @@ namespace MoneyTracking
             }
         }
 
-        public static void ShowTransactions()
+        public static void ShowTransactions(List<Transaction> transactions)
         {
             //TODO
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("This option is under construction");
             Console.ResetColor();
+
+            Console.WriteLine("Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
+            Console.WriteLine("-----------------------------------------------");
+            foreach (var transaction in transactions)
+            {
+                Console.WriteLine(transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
+            }
         }
 
         public static Transaction AddNewTransaction(BankAccount account)

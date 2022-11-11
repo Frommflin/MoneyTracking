@@ -4,10 +4,10 @@ namespace MoneyTracking
 {
     internal class Transaction
     {
-        public int TransactionId { get; }
-        public string TransactionType { get; set; }
-        public string TransactionTitle { get; set; }
-        public int TransactionAmount { get; set; }
+        public int Id { get; }
+        public string Type { get; set; }
+        public string Title { get; set; }
+        public int Amount { get; set; }
         public DateTime Date { get; set; }
         public BankAccount BankAccount { get; set; }
 
@@ -15,10 +15,10 @@ namespace MoneyTracking
 
         public Transaction(string transactionType, string transactionTitle, int transactionAmount, DateTime date, BankAccount bankAccount)
         {
-            TransactionId = transactionNumberSeed;
-            TransactionType = transactionType;
-            TransactionTitle = transactionTitle;
-            TransactionAmount = transactionAmount;
+            Id = transactionNumberSeed;
+            Type = transactionType;
+            Title = transactionTitle;
+            Amount = transactionAmount;
             Date = date;
             BankAccount = bankAccount;
 
