@@ -4,6 +4,7 @@ using MoneyTracking;
 Console.WriteLine("Welcome to your MoneyTracker!");
 
 BankAccount account = new BankAccount(); // account will be used for all transactions
+List<Transaction> transactions = new List<Transaction>();
 string input;
 
 do
@@ -19,7 +20,7 @@ do
     }
     else if (input == "2")
     {
-        Methods.AddNewTransaction();
+        transactions.Add(Methods.AddNewTransaction(account));
     }
     else if (input == "3")
     {

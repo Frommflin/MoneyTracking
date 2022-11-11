@@ -4,23 +4,26 @@ namespace MoneyTracking
 {
     internal class Transaction
     {
-        public string TransactionId { get; }
+        public int TransactionId { get; }
         public string TransactionType { get; set; }
         public string TransactionTitle { get; set; }
         public int TransactionAmount { get; set; }
         public DateTime Date { get; set; }
+        public BankAccount BankAccount { get; set; }
 
-        private static int TransactionNumberSeed = 234987;
+        private static int transactionNumberSeed = 234987;
 
-        public Transaction(string transactionId, string transactionType, string transactionTitle, int transactionAmount, DateTime date)
+        public Transaction(string transactionType, string transactionTitle, int transactionAmount, DateTime date, BankAccount bankAccount)
         {
-            TransactionId = transactionId;
+            TransactionId = transactionNumberSeed;
             TransactionType = transactionType;
             TransactionTitle = transactionTitle;
             TransactionAmount = transactionAmount;
             Date = date;
+            BankAccount = bankAccount;
 
-            TransactionNumberSeed++; //next transaction gets a different id
+            transactionNumberSeed++; //next transaction gets a different id
+            BankAccount.UpdateBalance(transactionAmount);
         }
     }
 }
