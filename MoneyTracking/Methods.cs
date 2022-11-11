@@ -19,5 +19,37 @@ namespace MoneyTracking
                 Console.WriteLine($") {menu[i-1]}");
             }
         }
+
+        public static void ShowTransactions()
+        {
+            //TODO
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("This option is under construction");
+            Console.ResetColor();
+        }
+
+        public static void AddNewTransaction()
+        {
+            //TODO
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("This option is under construction");
+            Console.ResetColor();
+        }
+
+        public static void EditTransaction()
+        {
+            //TODO
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("This option is under construction");
+            Console.ResetColor();
+        }
+        public static void SaveTransactions()
+        {
+            //TODO
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("This option is under construction. Exiting program");
+            Console.ResetColor();
+        }
+
     }
 }
