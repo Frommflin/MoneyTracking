@@ -7,6 +7,25 @@ BankAccount account = new BankAccount(); // account will be used for all transac
 List<Transaction> transactions = new List<Transaction>();
 string input;
 
+Random rand = new Random();
+for (int i = 1; i < 13; i++)
+{
+    int amount = rand.Next(10000);
+    string type;
+    int ie = rand.Next(2);
+    if(ie == 0)
+    {
+        type = "income";
+    }
+    else
+    {
+        type = "expense";
+    }
+    DateTime date = new DateTime(2020, i, 20);
+    transactions.Add(new Transaction(type, "test", amount, date, account));
+}
+
+
 do
 {
     Console.WriteLine($"Your current balance is {account.Balance}");
@@ -17,7 +36,8 @@ do
     input.Trim();
     if (input == "1")
     {
-        Methods.ShowTransactions(transactions);
+        string listFilter = Methods.FilterList();
+        Methods.ShowTransactions(transactions, listFilter);
     }
     else if (input == "2")
     {

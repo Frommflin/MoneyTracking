@@ -6,32 +6,42 @@ namespace MoneyTracking
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
-            
+
             Console.WriteLine("Menu: Type the number for the desired option to move on");
             Console.WriteLine("****************");
-            
+
             for (int i = 0; i < menu.Length; i++)
             {
                 Console.Write("(");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(i+1);
+                Console.Write(i + 1);
                 Console.ResetColor();
                 Console.WriteLine($") {menu[i]}");
             }
         }
 
-        public static void ShowTransactions(List<Transaction> transactions)
+        public static void ShowTransactions(List<Transaction> transactions, string filter)
         {
             //TODO
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("This option is under construction");
             Console.ResetColor();
 
+            Console.WriteLine(filter);
+
+
             Console.WriteLine("Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
             Console.WriteLine("-----------------------------------------------");
             foreach (var transaction in transactions)
             {
-                Console.WriteLine(transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
+                if (filter == transaction.Type) //showing only income or expense
+                {
+                    Console.WriteLine(transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
+                }
+                else if (filter == "all") // showing all items in list
+                {
+                    Console.WriteLine(transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
+                }
             }
         }
 
@@ -145,5 +155,39 @@ namespace MoneyTracking
             Console.ResetColor();
         }
 
+        internal static string FilterList()
+        {
+            string input;
+            string filter = "";
+
+            Console.WriteLine("What transactions would you like to see?");
+            do
+            {
+                Console.Write("'I' for incomes, 'E' for expenses or 'A' for all transactions: ");
+                input = Console.ReadLine();
+                input.Trim().ToLower();
+
+                if (input == "a")
+                {
+                    filter = "all";
+                } 
+                else if (input == "e")
+                {
+                    filter = "expense";
+                } 
+                else if (input == "i")
+                {
+                    filter = "income";
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input.");
+                    Console.ResetColor();
+                }
+            } while (filter == "");
+
+            return filter;
+        }
     }
 }
