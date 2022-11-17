@@ -3,6 +3,8 @@ namespace MoneyTracking
 {
     internal class Methods
     {
+        private static string sort;
+
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
@@ -20,19 +22,51 @@ namespace MoneyTracking
             }
         }
 
-        public static void ShowTransactions(List<Transaction> transactions, string filter)
+        public static void ShowTransactions(List<Transaction> transactions,string filter, string[] sortBy)
         {
             //TODO
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("This option is under construction");
             Console.ResetColor();
 
-            Console.WriteLine(filter);
-
+            List<Transaction> orderedList;
+            if (sortBy[0] == "1") // Sorting by Amount
+            {
+                if (sortBy[1] == "a")
+                {
+                    orderedList = transactions.OrderBy(t => t.Amount).ToList();
+                }
+                else
+                {
+                    orderedList = transactions.OrderByDescending(t => t.Amount).ToList();
+                }
+            }
+            else if (sortBy[0] == "2") // Sorting by Month
+            {
+                if (sortBy[1] == "a")
+                {
+                    orderedList = transactions.OrderBy(t => t.Date).ToList();
+                }
+                else
+                {
+                    orderedList = transactions.OrderByDescending(t => t.Date).ToList();
+                }
+            }
+            else  // Sorting by Title
+            {
+                if (sortBy[1] == "a")
+                {
+                    orderedList = transactions.OrderBy(t => t.Title).ToList();
+                }
+                else
+                {
+                    orderedList = transactions.OrderByDescending(t => t.Title).ToList();
+                }
+            }
 
             Console.WriteLine("Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
             Console.WriteLine("-----------------------------------------------");
-            foreach (var transaction in transactions)
+            foreach (var transaction in orderedList)
             {
                 if (filter == transaction.Type) //showing only income or expense
                 {
@@ -155,7 +189,7 @@ namespace MoneyTracking
             Console.ResetColor();
         }
 
-        internal static string FilterList()
+        public static string FilterList()
         {
             string input;
             string filter = "";
@@ -188,6 +222,58 @@ namespace MoneyTracking
             } while (filter == "");
 
             return filter;
+        }
+
+        public static string[] SortList()
+        {
+            string input;
+            string order = "";
+            string field = "";
+
+            Console.WriteLine("What field do you want to order the data by?");
+            Console.WriteLine("(1) Amount");
+            Console.WriteLine("(2) Month");
+            Console.WriteLine("(3) Title");
+            do
+            {
+                Console.Write("Order by field number: ");
+                input = Console.ReadLine();
+                input.Trim();
+
+                if (input == "1" || input == "2" || input == "3")
+                {
+                    field = input;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input.");
+                    Console.ResetColor();
+                }
+            } while (field == "");
+
+            Console.WriteLine("How do you want to sort the transactions?");
+            do
+            {
+                Console.Write("'A' for ascending or 'D' for descending: ");
+                input = Console.ReadLine();
+                input.Trim().ToLower();
+
+                if (input == "d" || input == "a")
+                {
+                    order = input;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input.");
+                    Console.ResetColor();
+                }
+            } while (order == "");
+
+            string[] sorted = { field, order };
+
+            return sorted;
         }
     }
 }

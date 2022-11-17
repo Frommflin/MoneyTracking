@@ -37,7 +37,8 @@ do
     if (input == "1")
     {
         string listFilter = Methods.FilterList();
-        Methods.ShowTransactions(transactions, listFilter);
+        string[] sorting = Methods.SortList();
+        Methods.ShowTransactions(transactions, listFilter, sorting);
     }
     else if (input == "2")
     {
