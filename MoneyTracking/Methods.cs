@@ -3,8 +3,6 @@ namespace MoneyTracking
 {
     internal class Methods
     {
-        private static string sort;
-
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
@@ -79,6 +77,15 @@ namespace MoneyTracking
             }
         }
 
+        public static void ShowTransactionsId(List<Transaction> transactions)
+        {
+            Console.WriteLine("Id".PadRight(10) + "Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
+            Console.WriteLine("-----------------------------------------------------------");
+            foreach (var transaction in transactions)
+            {
+                Console.WriteLine(transaction.Id.ToString().PadRight(10) + transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
+            }
+        }
         public static Transaction AddNewTransaction(BankAccount account)
         {
             //TODO
@@ -181,6 +188,7 @@ namespace MoneyTracking
             Console.WriteLine("This option is under construction");
             Console.ResetColor();
         }
+        
         public static void SaveTransactions()
         {
             //TODO

@@ -46,6 +46,7 @@ do
     }
     else if (input == "3")
     {
+        Methods.ShowTransactionsId(transactions);
         Methods.EditTransaction();
     }
     else if (input == "4")
