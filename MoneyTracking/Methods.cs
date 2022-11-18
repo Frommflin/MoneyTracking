@@ -22,11 +22,6 @@ namespace MoneyTracking
 
         public static void ShowTransactions(List<Transaction> transactions,string filter, string[] sortBy)
         {
-            //TODO
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("This option is under construction");
-            Console.ResetColor();
-
             List<Transaction> orderedList;
             if (sortBy[0] == "1") // Sorting by Amount
             {
@@ -86,13 +81,9 @@ namespace MoneyTracking
                 Console.WriteLine(transaction.Id.ToString().PadRight(10) + transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
             }
         }
+        
         public static Transaction AddNewTransaction(BankAccount account)
         {
-            //TODO
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("This option is under construction");
-            Console.ResetColor();
-
             string input;
             string type;
             string title;
@@ -109,9 +100,7 @@ namespace MoneyTracking
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid transaction type.");
-                Console.ResetColor();
+                ShowError("Invalid transaction type.");
                 return null;
             }
 
@@ -124,9 +113,7 @@ namespace MoneyTracking
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Title cannot be empty.");
-                Console.ResetColor();
+                ShowError("Title cannot be empty.");
                 return null;
             }
 
@@ -149,17 +136,13 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid amount. Only integers above 0 allowed.");
-                    Console.ResetColor();
+                    ShowError("Invalid amount. Only integers above 0 allowed.");
                     return null;
                 }
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Entered amount is not valid. Only integers allowed.");
-                Console.ResetColor();
+                ShowError("Entered amount is not valid. Only integers allowed.");
                 return null;
             }
 
@@ -172,9 +155,7 @@ namespace MoneyTracking
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Not a valid date");
-                Console.ResetColor();
+                ShowError("Not a valid date");
                 return null;
             }
 
@@ -183,13 +164,9 @@ namespace MoneyTracking
 
         public static void EditTransaction(ref List<Transaction> transactions)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("This option is under construction");
-            Console.ResetColor();
 
             string input;
             int id = 0;
-            string editedData;
 
             Console.WriteLine("What transaction would you like to edit? ('Q' to exit editing)");
             do
@@ -215,9 +192,7 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Not a valid ID");
-                    Console.ResetColor();
+                    ShowError("Not a valid ID");
                     return;
                 }
                 
@@ -278,16 +253,12 @@ namespace MoneyTracking
                                         }
                                         else
                                         {
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine("Invalid amount. Only integers above 0 allowed.");
-                                            Console.ResetColor();
+                                            ShowError("Invalid amount. Only integers above 0 allowed.");
                                         }
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Entered amount is not valid. Only integers allowed.");
-                                        Console.ResetColor();
+                                        ShowError("Entered amount is not valid. Only integers allowed.");
                                     }
                                 }while(input != "q");
                                 
@@ -306,9 +277,7 @@ namespace MoneyTracking
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Not a valid date");
-                                        Console.ResetColor();
+                                        ShowError("Not a valid date");
                                     }
                                 }while(input != "q");
                             }
@@ -326,25 +295,19 @@ namespace MoneyTracking
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Title cannot be empty.");
-                                        Console.ResetColor();
+                                        ShowError("Title cannot be empty.");
                                     }
                                 }while(input != "q");
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Not a valid option");
-                                Console.ResetColor();
+                                ShowError("Not a valid option");
                             }
                         } while (input.ToLower() != "q");
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Not a valid option");
-                        Console.ResetColor();
+                        ShowError("Not a valid option");
                     }
                 }
             }while(input != "q");
@@ -355,9 +318,7 @@ namespace MoneyTracking
         public static void SaveTransactions()
         {
             //TODO
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("This option is under construction. Exiting program");
-            Console.ResetColor();
+            ShowError("This option is under construction. Exiting program");
         }
 
         public static string FilterList()
@@ -386,9 +347,7 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid input.");
-                    Console.ResetColor();
+                    ShowError("Invalid input.");
                 }
             } while (filter == "");
 
@@ -417,9 +376,7 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid input.");
-                    Console.ResetColor();
+                    ShowError("Invalid input.");
                 }
             } while (field == "");
 
@@ -436,15 +393,20 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid input.");
-                    Console.ResetColor();
+                    ShowError("Invalid input.");
                 }
             } while (order == "");
 
             string[] sorted = { field, order };
 
             return sorted;
+        }
+
+        private static void ShowError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }
