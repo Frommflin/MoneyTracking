@@ -229,36 +229,123 @@ namespace MoneyTracking
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
-                if(input == "delete")
+                List<Transaction> item = transactions.Where(x => x.Id == id).ToList(); //storing the transaction with given id
+                foreach (Transaction transaction in item)
                 {
-                    //code to delete row in list
-                    //int index = transactions.IndexOf(transactions.Id == id);
-                    //Transaction item = (Transaction)transactions.Where(x => x.Id == id);
-                    //Console.WriteLine(item);
-
-
-                    List<Transaction> item = transactions.Where(x => x.Id == id).ToList();
-                    foreach (Transaction transaction in item)
+                    if (input == "delete")
                     {
                         int money = -transaction.Amount;
-                        Console.WriteLine($"Amount to be adjusted is: {money}");
                         transaction.BankAccount.UpdateBalance(money);
                         transactions.Remove(transaction);
+                        return;
                     }
+                    else if (input == "edit")
+                    {
+                        do
+                        {
+                            Console.WriteLine("What field do you like to edit?");
+                            Console.WriteLine("(1) Amount");
+                            Console.WriteLine("(2) Month");
+                            Console.WriteLine("(3) Title");
+                            Console.Write("Edit field: ");
+                            input = Console.ReadLine();
+                            input.Trim();
 
-                    //transactions.RemoveAll(item => item.Id == id);
+                            if (input == "1") //edit amount
+                            {
+                                do
+                                {
+                                    Console.Write($"New amount: ");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+                                    if (int.TryParse(input, out int value))
+                                    {
+                                        if (value > 0)
+                                        {
+                                            int returnMoney = -transaction.Amount;
+                                            transaction.BankAccount.UpdateBalance(returnMoney);
 
-                    return;
-                }
-                else if (input == "edit")
-                {
-                    //code to edit row
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Not a valid option");
-                    Console.ResetColor();
+                                            if (transaction.Type == "expense")
+                                            {
+                                                transaction.Amount = -value; // stores negative value
+                                            }
+                                            else // type == income
+                                            {
+                                                transaction.Amount = value;
+                                            }
+                                            transaction.BankAccount.UpdateBalance(transaction.Amount);
+                                            input = "q";
+                                        }
+                                        else
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine("Invalid amount. Only integers above 0 allowed.");
+                                            Console.ResetColor();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Entered amount is not valid. Only integers allowed.");
+                                        Console.ResetColor();
+                                    }
+                                }while(input != "q");
+                                
+                            }
+                            else if (input == "2") //edit date
+                            {
+                                do
+                                {
+                                    Console.Write($"New date (yy-mm-dd): ");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+                                    if (DateTime.TryParse(input, out DateTime datevalue))
+                                    {
+                                        transaction.Date = datevalue;
+                                        input = "q";
+                                    }
+                                    else
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Not a valid date");
+                                        Console.ResetColor();
+                                    }
+                                }while(input != "q");
+                            }
+                            else if (input == "3") //edit title
+                            {
+                                do
+                                {
+                                    Console.Write($"New transaction title: ");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+                                    if (!String.IsNullOrEmpty(input))
+                                    {
+                                        transaction.Title = input;
+                                        input = "q";
+                                    }
+                                    else
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Title cannot be empty.");
+                                        Console.ResetColor();
+                                    }
+                                }while(input != "q");
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Not a valid option");
+                                Console.ResetColor();
+                            }
+                        } while (input.ToLower() != "q");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Not a valid option");
+                        Console.ResetColor();
+                    }
                 }
             }while(input != "q");
             
