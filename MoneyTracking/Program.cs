@@ -20,6 +20,7 @@ for (int i = 1; i < 13; i++)
     else
     {
         type = "expense";
+        amount = -amount;
     }
     DateTime date = new DateTime(2020, i, 20);
     transactions.Add(new Transaction(type, "test", amount, date, account));
@@ -47,7 +48,7 @@ do
     else if (input == "3")
     {
         Methods.ShowTransactionsId(transactions);
-        Methods.EditTransaction();
+        Methods.EditTransaction(ref transactions);
     }
     else if (input == "4")
     {

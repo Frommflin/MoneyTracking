@@ -181,12 +181,88 @@ namespace MoneyTracking
             return new Transaction(type, title, amount, date, account);
         }
 
-        public static void EditTransaction()
+        public static void EditTransaction(ref List<Transaction> transactions)
         {
-            //TODO
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("This option is under construction");
             Console.ResetColor();
+
+            string input;
+            int id = 0;
+            string editedData;
+
+            Console.WriteLine("What transaction would you like to edit? ('Q' to exit editing)");
+            do
+            {
+                Console.Write("Transaction ID: ");
+                input = Console.ReadLine();
+                input.Trim();
+
+                if(int.TryParse(input, out int value))
+                {
+                    foreach(var transaction in transactions)
+                    {
+                        if (value.Equals(transaction.Id))
+                        {
+                            id = value;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"ID: {id}");
+                            Console.ResetColor();
+                            input = "q";
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Not a valid ID");
+                    Console.ResetColor();
+                    return;
+                }
+                
+            } while (input.ToLower() != "q");
+
+            do
+            {
+                Console.Write("Do you wish to delete or edit this transacion? ");
+                input = Console.ReadLine();
+                input.Trim().ToLower();
+
+                if(input == "delete")
+                {
+                    //code to delete row in list
+                    //int index = transactions.IndexOf(transactions.Id == id);
+                    //Transaction item = (Transaction)transactions.Where(x => x.Id == id);
+                    //Console.WriteLine(item);
+
+
+                    List<Transaction> item = transactions.Where(x => x.Id == id).ToList();
+                    foreach (Transaction transaction in item)
+                    {
+                        int money = -transaction.Amount;
+                        Console.WriteLine($"Amount to be adjusted is: {money}");
+                        transaction.BankAccount.UpdateBalance(money);
+                        transactions.Remove(transaction);
+                    }
+
+                    //transactions.RemoveAll(item => item.Id == id);
+
+                    return;
+                }
+                else if (input == "edit")
+                {
+                    //code to edit row
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Not a valid option");
+                    Console.ResetColor();
+                }
+            }while(input != "q");
+            
+
         }
         
         public static void SaveTransactions()
