@@ -7,26 +7,8 @@ BankAccount account = new BankAccount(); // account will be used for all transac
 List<Transaction> transactions = new List<Transaction>();
 string input;
 
-Random rand = new Random();
-for (int i = 1; i < 13; i++)
-{
-    int amount = rand.Next(10000);
-    string type;
-    int ie = rand.Next(2);
-    if(ie == 0)
-    {
-        type = "income";
-    }
-    else
-    {
-        type = "expense";
-        amount = -amount;
-    }
-    DateTime date = new DateTime(2020, i, 20);
-    transactions.Add(new Transaction(type, "test", amount, date, account));
-}
-
 Methods.CheckForExistingFile();
+Methods.LoadTransactions(transactions, account);
 
 do
 {
@@ -49,7 +31,7 @@ do
     else if (input == "3")
     {
         Methods.ShowTransactionsId(transactions);
-        Methods.EditTransaction(ref transactions);
+        Methods.EditTransaction(transactions);
     }
     else if (input == "4")
     {

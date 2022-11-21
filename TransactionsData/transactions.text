@@ -1,12 +1,2 @@
-id:234987type:expensetitle:testamount:-4188date:2020-01-20 00:00:00
-id:234988type:expensetitle:testamount:-3753date:2020-02-20 00:00:00
-id:234989type:incometitle:testamount:4881date:2020-03-20 00:00:00
-id:234990type:incometitle:testamount:5276date:2020-04-20 00:00:00
-id:234991type:incometitle:testamount:1669date:2020-05-20 00:00:00
-id:234992type:incometitle:testamount:9814date:2020-06-20 00:00:00
-id:234993type:expensetitle:testamount:-4521date:2020-07-20 00:00:00
-id:234994type:incometitle:testamount:9589date:2020-08-20 00:00:00
-id:234995type:incometitle:testamount:4774date:2020-09-20 00:00:00
-id:234996type:incometitle:testamount:8427date:2020-10-20 00:00:00
-id:234997type:expensetitle:testamount:-1241date:2020-11-20 00:00:00
-id:234998type:incometitle:testamount:5685date:2020-12-20 00:00:00
+id:234988;type:expense;title:Food;amount:-2000;date:2022-03-25 00:00:00;
+id:234989;type:income;title:salary;amount:56487;date:2022-07-14 00:00:00;

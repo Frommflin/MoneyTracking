@@ -25,6 +25,29 @@ namespace MoneyTracking
                 }
             }
         }
+        
+        public static void LoadTransactions(List<Transaction> transactions, BankAccount account)
+        {
+            string path = $"{directory}{fileName}";
+            if (File.Exists(path))
+            {
+                //Collect all saved data in a string array
+                string[] transactionsString = File.ReadAllLines(path);
+
+                //Looping through the array to re-create the transactions into the list
+                for(int i = 0; i < transactionsString.Length; i++)
+                {  
+                    string[] split = transactionsString[i].Split(';');
+                    int id = int.Parse(split[0].Substring(split[0].IndexOf(':') + 1));
+                    string type = split[1].Substring(split[1].IndexOf(':') + 1);
+                    string title = split[2].Substring(split[2].IndexOf(':') + 1);
+                    int amount = int.Parse(split[3].Substring(split[3].IndexOf(':') + 1));
+                    DateTime date = DateTime.Parse(split[4].Substring(split[4].IndexOf(':') + 1));
+
+                    transactions.Add(new Transaction(id, type, title, amount, date, account));
+                };
+            }
+        }
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
@@ -184,7 +207,7 @@ namespace MoneyTracking
             return new Transaction(type, title, amount, date, account);
         }
 
-        public static void EditTransaction(ref List<Transaction> transactions)
+        public static void EditTransaction(List<Transaction> transactions)
         {
 
             string input;
@@ -343,11 +366,11 @@ namespace MoneyTracking
             StringBuilder builder = new StringBuilder();
             foreach(Transaction transaction in transactions)
             {
-                builder.Append($"id:{transaction.Id}");
-                builder.Append($"type:{transaction.Type}");
-                builder.Append($"title:{transaction.Title}");
-                builder.Append($"amount:{transaction.Amount}");
-                builder.Append($"date:{transaction.Date}");
+                builder.Append($"id:{transaction.Id};");
+                builder.Append($"type:{transaction.Type};");
+                builder.Append($"title:{transaction.Title};");
+                builder.Append($"amount:{transaction.Amount};");
+                builder.Append($"date:{transaction.Date};");
                 builder.Append(Environment.NewLine);
             }
             File.WriteAllText(path, builder.ToString());

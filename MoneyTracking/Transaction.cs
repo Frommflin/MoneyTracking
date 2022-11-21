@@ -25,5 +25,19 @@ namespace MoneyTracking
             transactionNumberSeed++; //next transaction gets a different id
             BankAccount.UpdateBalance(transactionAmount);
         }
+
+        public Transaction(int id, string type, string title, int amount, DateTime date, BankAccount bankAccount)
+        {
+            Id = id;
+            Type = type;
+            Title = title;
+            Amount = amount;
+            Date = date;
+            BankAccount = bankAccount;
+
+            transactionNumberSeed = id + 1;
+
+            BankAccount.UpdateBalance(amount);
+        }
     }
 }
