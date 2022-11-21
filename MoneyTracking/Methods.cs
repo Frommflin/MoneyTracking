@@ -19,9 +19,7 @@ namespace MoneyTracking
                 {
                     Directory.CreateDirectory(directory);
 
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("Directory created and ready for saving files.");
-                    Console.ResetColor();
+                    ShowMessage("Directory created and ready for saving files.", "Blue");
                 }
             }
         }
@@ -48,13 +46,13 @@ namespace MoneyTracking
                 };
             }
         }
+        
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
 
             Console.WriteLine("Menu: Type the number for the desired option to move on");
-            Console.WriteLine("****************");
-
+            Console.WriteLine("**************************");
             for (int i = 0; i < menu.Length; i++)
             {
                 Console.Write("(");
@@ -63,6 +61,7 @@ namespace MoneyTracking
                 Console.ResetColor();
                 Console.WriteLine($") {menu[i]}");
             }
+            Console.WriteLine("**************************");
         }
 
         public static void ShowTransactions(List<Transaction> transactions,string filter, string[] sortBy)
@@ -102,8 +101,12 @@ namespace MoneyTracking
                 }
             }
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine();
             Console.WriteLine("Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
             Console.WriteLine("-----------------------------------------------");
+            Console.ResetColor();
             foreach (var transaction in orderedList)
             {
                 if (filter == transaction.Type) //showing only income or expense
@@ -119,12 +122,16 @@ namespace MoneyTracking
 
         public static void ShowTransactionsId(List<Transaction> transactions)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
             Console.WriteLine("Id".PadRight(10) + "Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
             Console.WriteLine("-----------------------------------------------------------");
+            Console.ResetColor();
             foreach (var transaction in transactions)
             {
                 Console.WriteLine(transaction.Id.ToString().PadRight(10) + transaction.Type.PadRight(10) + transaction.Amount.ToString().PadRight(10) + transaction.Date.ToString("MMMM").PadRight(20) + transaction.Title);
             }
+            Console.WriteLine();
         }
         
         public static Transaction AddNewTransaction(BankAccount account)
@@ -135,8 +142,8 @@ namespace MoneyTracking
             int amount;
             DateTime date;
 
-            Console.WriteLine("Follow instructions to add a new transaction");
-            Console.Write($"Type of transaction (income/expense): ");
+            ShowMessage("Follow instructions to add a new transaction", "Blue");
+            InputLine($"Type of transaction (income/expense): ");
             input = Console.ReadLine();
             input.Trim().ToLower();
             if(input == "income" || input == "expense")
@@ -145,11 +152,11 @@ namespace MoneyTracking
             }
             else
             {
-                ShowError("Invalid transaction type.");
+                ShowMessage("Invalid transaction type.", "Red");
                 return null;
             }
 
-            Console.Write($"Title of transaction: ");
+            InputLine($"Title of transaction: ");
             input = Console.ReadLine();
             input.Trim();
             if (!String.IsNullOrEmpty(input))
@@ -158,11 +165,11 @@ namespace MoneyTracking
             }
             else
             {
-                ShowError("Title cannot be empty.");
+                ShowMessage("Title cannot be empty.", "Red");
                 return null;
             }
 
-            Console.Write($"Amount: ");
+            InputLine($"Amount: ");
             input = Console.ReadLine();
             input.Trim();
             if (int.TryParse(input, out int value))
@@ -181,17 +188,17 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    ShowError("Invalid amount. Only integers above 0 allowed.");
+                    ShowMessage("Invalid amount. Only integers above 0 allowed.", "Red");
                     return null;
                 }
             }
             else
             {
-                ShowError("Entered amount is not valid. Only integers allowed.");
+                ShowMessage("Entered amount is not valid. Only integers allowed.", "Red");
                 return null;
             }
 
-            Console.Write($"Date of transaction (yy-mm-dd): ");
+            InputLine($"Date of transaction (yy-mm-dd): ");
             input = Console.ReadLine();
             input.Trim();
             if (DateTime.TryParse(input, out DateTime datevalue))
@@ -200,7 +207,7 @@ namespace MoneyTracking
             }
             else
             {
-                ShowError("Not a valid date");
+                ShowMessage("Not a valid date", "Red");
                 return null;
             }
 
@@ -213,10 +220,10 @@ namespace MoneyTracking
             string input;
             int id = 0;
 
-            Console.WriteLine("What transaction would you like to edit? ('Q' to exit editing)");
+            ShowMessage("What transaction would you like to edit? ('Q' to exit editing)", "Blue");
             do
             {
-                Console.Write("Transaction ID: ");
+                InputLine("Transaction ID: ");
                 input = Console.ReadLine();
                 input.Trim();
 
@@ -227,9 +234,6 @@ namespace MoneyTracking
                         if (value.Equals(transaction.Id))
                         {
                             id = value;
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"ID: {id}");
-                            Console.ResetColor();
                             input = "q";
                             break;
                         }
@@ -237,7 +241,10 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    ShowError("Not a valid ID");
+                    if(input != "q")
+                    {
+                        ShowMessage("Not a valid ID", "Red");
+                    }
                     return;
                 }
                 
@@ -245,7 +252,7 @@ namespace MoneyTracking
 
             do
             {
-                Console.Write("Do you wish to delete or edit this transacion? ");
+                InputLine("Do you wish to delete or edit this transacion? ");
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
@@ -263,11 +270,11 @@ namespace MoneyTracking
                     {
                         do
                         {
-                            Console.WriteLine("What field do you like to edit?");
+                            ShowMessage("What field do you like to edit?", "Blue");
                             Console.WriteLine("(1) Amount");
                             Console.WriteLine("(2) Month");
                             Console.WriteLine("(3) Title");
-                            Console.Write("Edit field: ");
+                            InputLine("Edit field: ");
                             input = Console.ReadLine();
                             input.Trim();
 
@@ -275,7 +282,7 @@ namespace MoneyTracking
                             {
                                 do
                                 {
-                                    Console.Write($"New amount: ");
+                                    InputLine($"New amount: ");
                                     input = Console.ReadLine();
                                     input.Trim();
                                     if (int.TryParse(input, out int value))
@@ -298,12 +305,12 @@ namespace MoneyTracking
                                         }
                                         else
                                         {
-                                            ShowError("Invalid amount. Only integers above 0 allowed.");
+                                            ShowMessage("Invalid amount. Only integers above 0 allowed.", "Red");
                                         }
                                     }
                                     else
                                     {
-                                        ShowError("Entered amount is not valid. Only integers allowed.");
+                                        ShowMessage("Entered amount is not valid. Only integers allowed.", "Red");
                                     }
                                 }while(input != "q");
                                 
@@ -312,7 +319,7 @@ namespace MoneyTracking
                             {
                                 do
                                 {
-                                    Console.Write($"New date (yy-mm-dd): ");
+                                    InputLine($"New date (yy-mm-dd): ");
                                     input = Console.ReadLine();
                                     input.Trim();
                                     if (DateTime.TryParse(input, out DateTime datevalue))
@@ -322,7 +329,7 @@ namespace MoneyTracking
                                     }
                                     else
                                     {
-                                        ShowError("Not a valid date");
+                                        ShowMessage("Not a valid date", "Red");
                                     }
                                 }while(input != "q");
                             }
@@ -330,7 +337,7 @@ namespace MoneyTracking
                             {
                                 do
                                 {
-                                    Console.Write($"New transaction title: ");
+                                    InputLine($"New transaction title: ");
                                     input = Console.ReadLine();
                                     input.Trim();
                                     if (!String.IsNullOrEmpty(input))
@@ -340,19 +347,19 @@ namespace MoneyTracking
                                     }
                                     else
                                     {
-                                        ShowError("Title cannot be empty.");
+                                        ShowMessage("Title cannot be empty.", "Red");
                                     }
                                 }while(input != "q");
                             }
                             else
                             {
-                                ShowError("Not a valid option");
+                                ShowMessage("Not a valid option", "Red");
                             }
                         } while (input.ToLower() != "q");
                     }
                     else
                     {
-                        ShowError("Not a valid option");
+                        ShowMessage("Not a valid option", "Red");
                     }
                 }
             }while(input != "q");
@@ -381,10 +388,10 @@ namespace MoneyTracking
             string input;
             string filter = "";
 
-            Console.WriteLine("What transactions would you like to see?");
+            ShowMessage("What transactions would you like to see?", "Blue");
             do
             {
-                Console.Write("'I' for incomes, 'E' for expenses or 'A' for all transactions: ");
+                InputLine("'I' for incomes, 'E' for expenses or 'A' for all transactions: ");
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
@@ -402,7 +409,7 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    ShowError("Invalid input.");
+                    ShowMessage("Invalid input.", "Red");
                 }
             } while (filter == "");
 
@@ -415,13 +422,13 @@ namespace MoneyTracking
             string order = "";
             string field = "";
 
-            Console.WriteLine("What field do you want to order the data by?");
+            ShowMessage("What field do you want to order the data by?", "Blue");
             Console.WriteLine("(1) Amount");
             Console.WriteLine("(2) Month");
             Console.WriteLine("(3) Title");
             do
             {
-                Console.Write("Order by field number: ");
+                InputLine("Order by field number: ");
                 input = Console.ReadLine();
                 input.Trim();
 
@@ -431,14 +438,14 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    ShowError("Invalid input.");
+                    ShowMessage("Invalid input.", "Red");
                 }
             } while (field == "");
 
-            Console.WriteLine("How do you want to sort the transactions?");
+            ShowMessage("How do you want to sort the transactions?", "Blue");
             do
             {
-                Console.Write("'A' for ascending or 'D' for descending: ");
+                InputLine("'A' for ascending or 'D' for descending: ");
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
@@ -448,7 +455,7 @@ namespace MoneyTracking
                 }
                 else
                 {
-                    ShowError("Invalid input.");
+                    ShowMessage("Invalid input.", "Red");
                 }
             } while (order == "");
 
@@ -457,10 +464,30 @@ namespace MoneyTracking
             return sorted;
         }
 
-        private static void ShowError(string message)
+        public static void ShowMessage(string message, string color)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+
+            switch(color)
+            {
+                case "Blue":
+                    Console.ForegroundColor = ConsoleColor.Blue; 
+                    break;
+                case "Cyan":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                default: 
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+            }
+
             Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        public static void InputLine(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(message);
             Console.ResetColor();
         }
 

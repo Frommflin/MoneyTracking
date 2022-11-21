@@ -12,12 +12,14 @@ Methods.LoadTransactions(transactions, account);
 
 do
 {
-    Console.WriteLine($"Your current balance is {account.Balance}");
+    Console.WriteLine($"Your current balance is {account.Balance} kr");
     Methods.ShowMenu();
 
-    Console.Write("Enter option: ");
+    Methods.InputLine("Enter option: ");
     input = Console.ReadLine();
+    Console.WriteLine();
     input.Trim();
+
     if (input == "1")
     {
         string listFilter = Methods.FilterList();
@@ -39,9 +41,7 @@ do
     }
     else
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Invalid option");
-        Console.ResetColor();
+        Methods.ShowMessage("Invalid option", "Red");
     }
     Console.WriteLine();
     Console.WriteLine();
