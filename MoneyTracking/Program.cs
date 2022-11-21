@@ -26,6 +26,7 @@ for (int i = 1; i < 13; i++)
     transactions.Add(new Transaction(type, "test", amount, date, account));
 }
 
+Methods.CheckForExistingFile();
 
 do
 {

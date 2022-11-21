@@ -3,6 +3,32 @@ namespace MoneyTracking
 {
     internal class Methods
     {
+        //directory = path to my local project repository
+        private static string directory = @"C:\Users\Freak\OneDrive\Skrivbord\Skolshiet\C-Sharp .NET\Projects\MoneyTracking\TransactionsData";
+        private static string fileName = "transactions.text"; 
+
+        internal static void CheckForExistingFile()
+        {
+            string path = $"{directory}{fileName}";
+
+            if (File.Exists(path))
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("An existing file with transactionsdata is found.");
+                Console.ResetColor();
+            }
+            else
+            {
+                if(!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(directory);
+                    
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Directory ready for saving files."); 
+                    Console.ResetColor();
+                }
+            }
+        }
         public static void ShowMenu()
         {
             string[] menu = { "Show transactions", "Add new transaction", "Edit transaction", "Save and exit" };
@@ -408,5 +434,6 @@ namespace MoneyTracking
             Console.WriteLine(message);
             Console.ResetColor();
         }
+
     }
 }
