@@ -1,30 +1,26 @@
 ﻿
+using System.Text;
+
 namespace MoneyTracking
 {
     internal class Methods
     {
         //directory = path to my local project repository
-        private static string directory = @"C:\Users\Freak\OneDrive\Skrivbord\Skolshiet\C-Sharp .NET\Projects\MoneyTracking\TransactionsData";
+        private static string directory = @"C:\Users\Freak\OneDrive\Skrivbord\Skolshiet\C-Sharp .NET\Projects\MoneyTracking\TransactionsData\";
         private static string fileName = "transactions.text"; 
 
         internal static void CheckForExistingFile()
         {
             string path = $"{directory}{fileName}";
 
-            if (File.Exists(path))
+            if (!File.Exists(path))
             {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("An existing file with transactionsdata is found.");
-                Console.ResetColor();
-            }
-            else
-            {
-                if(!Directory.Exists(path))
+                if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(directory);
-                    
+
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("Directory ready for saving files."); 
+                    Console.WriteLine("Directory created and ready for saving files.");
                     Console.ResetColor();
                 }
             }
@@ -341,10 +337,20 @@ namespace MoneyTracking
 
         }
         
-        public static void SaveTransactions()
+        public static void SaveTransactions(List<Transaction> transactions)
         {
-            //TODO
-            ShowError("This option is under construction. Exiting program");
+            string path = $"{directory}{fileName}";
+            StringBuilder builder = new StringBuilder();
+            foreach(Transaction transaction in transactions)
+            {
+                builder.Append($"id:{transaction.Id}");
+                builder.Append($"type:{transaction.Type}");
+                builder.Append($"title:{transaction.Title}");
+                builder.Append($"amount:{transaction.Amount}");
+                builder.Append($"date:{transaction.Date}");
+                builder.Append(Environment.NewLine);
+            }
+            File.WriteAllText(path, builder.ToString());
         }
 
         public static string FilterList()

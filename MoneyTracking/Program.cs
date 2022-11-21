@@ -53,7 +53,7 @@ do
     }
     else if (input == "4")
     {
-        Methods.SaveTransactions();
+        Methods.SaveTransactions(transactions);
     }
     else
     {
