@@ -28,7 +28,7 @@ do
     }
     else if (input == "2")
     {
-        transactions.Add(Methods.AddNewTransaction(account));
+        Methods.AddNewTransaction(transactions, account);
     }
     else if (input == "3")
     {

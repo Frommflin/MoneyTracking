@@ -102,7 +102,6 @@ namespace MoneyTracking
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-
             Console.WriteLine();
             Console.WriteLine("Type".PadRight(10) + "Amount".PadRight(10) + "Transaction month".PadRight(20) + "Title");
             Console.WriteLine("-----------------------------------------------");
@@ -134,89 +133,110 @@ namespace MoneyTracking
             Console.WriteLine();
         }
         
-        public static Transaction AddNewTransaction(BankAccount account)
+        public static void AddNewTransaction(List<Transaction> transactions, BankAccount account)
         {
             string input;
-            string type;
-            string title;
-            int amount;
-            DateTime date;
+            string type = "";
+            string title = "";
+            int amount = 0;
+            DateTime date = new DateTime(0001,01,01);
 
-            ShowMessage("Follow instructions to add a new transaction", "Blue");
-            InputLine($"Type of transaction (income/expense): ");
-            input = Console.ReadLine();
-            input.Trim().ToLower();
-            if(input == "income" || input == "expense")
+            ShowMessage("Follow instructions to add a new transaction. Enter 'Q' to exit", "Blue");
+            do
             {
-                type = input;
-            }
-            else
-            {
-                ShowMessage("Invalid transaction type.", "Red");
-                return null;
-            }
-
-            InputLine($"Title of transaction: ");
-            input = Console.ReadLine();
-            input.Trim();
-            if (!String.IsNullOrEmpty(input))
-            {
-                title = input;
-            }
-            else
-            {
-                ShowMessage("Title cannot be empty.", "Red");
-                return null;
-            }
-
-            InputLine($"Amount: ");
-            input = Console.ReadLine();
-            input.Trim();
-            if (int.TryParse(input, out int value))
-            {
-                if(value > 0)
+                InputLine($"Type of transaction (income/expense): ");
+                input = Console.ReadLine();
+                input.Trim().ToLower();
+                if (input == "q")
                 {
-                    if(type == "expense")
-                    {
-                        amount = -value; // stores negative value
-                    }
-                    else // type == income
-                    {
-                        amount = value;
-                    }
-                    
+                    return;
+                }
+                else if (input == "income" || input == "expense")
+                {
+                    type = input;
                 }
                 else
                 {
-                    ShowMessage("Invalid amount. Only integers above 0 allowed.", "Red");
-                    return null;
+                    ShowMessage("Invalid transaction type.", "Red");
                 }
-            }
-            else
+            } while (type == "");
+            
+            do
             {
-                ShowMessage("Entered amount is not valid. Only integers allowed.", "Red");
-                return null;
-            }
-
-            InputLine($"Date of transaction (yy-mm-dd): ");
-            input = Console.ReadLine();
-            input.Trim();
-            if (DateTime.TryParse(input, out DateTime datevalue))
+                InputLine($"Title of transaction: ");
+                input = Console.ReadLine();
+                input.Trim();
+                if (input == "q")
+                {
+                    return;
+                }
+                else if (!String.IsNullOrEmpty(input))
+                {
+                    title = input;
+                }
+                else
+                {
+                    ShowMessage("Title cannot be empty.", "Red");
+                }
+            } while (title == "");
+            
+            do
             {
-                date = datevalue;
-            }
-            else
+                InputLine($"Amount: ");
+                input = Console.ReadLine();
+                input.Trim();
+                if (input == "q")
+                {
+                    return;
+                }
+                else if (int.TryParse(input, out int value))
+                {
+                    if(value > 0)
+                    {
+                        if(type == "expense")
+                        {
+                            amount = -value; // stores negative value
+                        }
+                        else // type == income
+                        {
+                            amount = value;
+                        }
+                    }
+                    else
+                    {
+                        ShowMessage("Invalid amount. Only integers above 0 allowed.", "Red");
+                    }
+                }
+                else
+                {
+                    ShowMessage("Entered amount is not valid. Only integers allowed.", "Red");
+                }
+            } while (amount == 0);
+            
+            do
             {
-                ShowMessage("Not a valid date", "Red");
-                return null;
-            }
-
-            return new Transaction(type, title, amount, date, account);
+                InputLine($"Date of transaction (yy-mm-dd): ");
+                input = Console.ReadLine();
+                input.Trim();
+                if (input == "q")
+                {
+                    return;
+                }
+                else if (DateTime.TryParse(input, out DateTime datevalue))
+                {
+                    date = datevalue;
+                }
+                else
+                {
+                    ShowMessage("Not a valid date", "Red");
+                }
+            } while (date == new DateTime(0001, 01, 01));
+            
+            transactions.Add(new Transaction(type, title, amount, date, account));
         }
 
         public static void EditTransaction(List<Transaction> transactions)
         {
-
             string input;
             int id = 0;
 
@@ -312,7 +332,7 @@ namespace MoneyTracking
                                     {
                                         ShowMessage("Entered amount is not valid. Only integers allowed.", "Red");
                                     }
-                                }while(input != "q");
+                                } while (input != "q");
                                 
                             }
                             else if (input == "2") //edit date
@@ -331,7 +351,7 @@ namespace MoneyTracking
                                     {
                                         ShowMessage("Not a valid date", "Red");
                                     }
-                                }while(input != "q");
+                                } while (input != "q");
                             }
                             else if (input == "3") //edit title
                             {
@@ -349,7 +369,7 @@ namespace MoneyTracking
                                     {
                                         ShowMessage("Title cannot be empty.", "Red");
                                     }
-                                }while(input != "q");
+                                } while (input != "q");
                             }
                             else
                             {
@@ -362,9 +382,7 @@ namespace MoneyTracking
                         ShowMessage("Not a valid option", "Red");
                     }
                 }
-            }while(input != "q");
-            
-
+            } while (input != "q");
         }
         
         public static void SaveTransactions(List<Transaction> transactions)
@@ -391,25 +409,21 @@ namespace MoneyTracking
             ShowMessage("What transactions would you like to see?", "Blue");
             do
             {
-                InputLine("'I' for incomes, 'E' for expenses or 'A' for all transactions: ");
+                InputLine("Incomes or Expenses. Other inputs shows all transactions: ");
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
-                if (input == "a")
-                {
-                    filter = "all";
-                } 
-                else if (input == "e")
+                if (input == "e" || input == "expense" || input == "expenses")
                 {
                     filter = "expense";
                 } 
-                else if (input == "i")
+                else if (input == "i" || input == "income" || input == "incomes")
                 {
                     filter = "income";
                 }
                 else
                 {
-                    ShowMessage("Invalid input.", "Red");
+                    filter = "all";
                 }
             } while (filter == "");
 
@@ -422,13 +436,13 @@ namespace MoneyTracking
             string order = "";
             string field = "";
 
-            ShowMessage("What field do you want to order the data by?", "Blue");
+            ShowMessage("What field do you want to order the transactions by?", "Blue");
             Console.WriteLine("(1) Amount");
             Console.WriteLine("(2) Month");
             Console.WriteLine("(3) Title");
             do
             {
-                InputLine("Order by field number: ");
+                InputLine("Order by field: ");
                 input = Console.ReadLine();
                 input.Trim();
 
@@ -449,9 +463,13 @@ namespace MoneyTracking
                 input = Console.ReadLine();
                 input.Trim().ToLower();
 
-                if (input == "d" || input == "a")
+                if (input == "d" || input == "des" || input =="descending")
                 {
-                    order = input;
+                    order = "d";
+                }
+                else if (input == "a" || input == "asc" || input == "ascending")
+                {
+                    order = "a";
                 }
                 else
                 {
@@ -464,9 +482,8 @@ namespace MoneyTracking
             return sorted;
         }
 
-        public static void ShowMessage(string message, string color)
+        public static void ShowMessage(string message, string color) //Showing line of message/instruction in color 
         {
-
             switch(color)
             {
                 case "Blue":
@@ -479,17 +496,15 @@ namespace MoneyTracking
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
             }
-
             Console.WriteLine(message);
             Console.ResetColor();
         }
 
-        public static void InputLine(string message)
+        public static void InputLine(string message) //Showing line in color before place for input
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write(message);
             Console.ResetColor();
         }
-
     }
 }
